@@ -14,10 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
-      - name: Install dependencies
+      - name: Install packages
         run: |
           install.packages(c("shiny", "rsconnect"), type = "binary")
-          shell: Rscript {0}
       - name: Push to shiny.io
         run: |
           Rscript -e "rsconnect::setAccountInfo(name= ${{ env.SHINY_APP_ACC == 'kailewis'}}, token=${{secrets.SHINYAPPS_TOKEN}}, secret=${{secrets.SHINYAPPS_SECRET}})"
