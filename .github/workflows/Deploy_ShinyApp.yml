@@ -1,0 +1,29 @@
+# Workflow to automatically deploy shiny application
+
+name: ShinyApp_Deployment
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        r-version: [3.5, 3.6]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@main
+      - name: Install dependencies
+        run: |
+          install.packages(c("shiny", "rsconnect"), type = "binary")
+          remotes::install_deps(dependencies = TRUE)
+          shell: Rscript {0}
+      - name: Push to shiny.io
+        run: |
+          Rscript -e "rsconnect::setAccountInfo(name=${{secrets.SHINY_ACC_NAME}}, token=${{secrets.SHINYAPPS_TOKEN}}, secret=${{secrets.SHINYAPPS_SECRET}})"
+          Rscript -e "rsconnect::deployApp(appName = ${{secrets.MASTER_NAME}})" 
