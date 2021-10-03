@@ -1,0 +1,13 @@
+name: COVID19_InteractiveMap
+title: COVID19_InteractiveMap
+username:
+account: kailewis
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4783726
+bundleId: 5098151
+url: https://kailewis.shinyapps.io/covid19_interactivemap/
+when: 1633215540.2334
+lastSyncTime: 1633215540.2334
+asMultiple: FALSE
+asStatic: FALSE
