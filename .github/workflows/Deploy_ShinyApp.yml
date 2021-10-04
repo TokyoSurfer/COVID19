@@ -17,9 +17,15 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@master
         
-      - name: Setup dependencies
+      - name: Install renv
         run: |
-          install.packages(c("shiny", "rsconnect"), type = "binary")
+          install.packages("renv")
+        shell: Rscript {0}
+      
+      - name: Restore environment
+        run: |
+          renv::consent(TRUE)
+          renv::restore()
         shell: Rscript {0}
         
       - name: Push to shiny.io
