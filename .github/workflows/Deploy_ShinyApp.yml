@@ -12,7 +12,8 @@ jobs:
   deploy-shiny:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@v2
       
       - name: Setup R
         uses: r-lib/actions/setup-r@master
@@ -27,7 +28,15 @@ jobs:
           renv::consent(TRUE)
           renv::restore()
         shell: Rscript {0}
-        
+      
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/Library/Application Support/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+            
       - name: Push to shiny.io
         run: |
           Rscript -e "rsconnect::setAccountInfo(name='kailewis', token=${{secrets.SHINYAPPS_TOKEN}}, secret=${{secrets.SHINYAPPS_SECRET}})"
